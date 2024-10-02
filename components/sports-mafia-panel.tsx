@@ -65,18 +65,18 @@ export function SportsMafiaPanelComponent() {
   const distributeRoles = () => {
     const newPlayers = [...players];
     const roles: Player['role'][] = ['don', 'mafia', 'mafia', 'sheriff', 'peaceful', 'peaceful', 'peaceful', 'peaceful', 'peaceful', 'peaceful'];
-    
+
     // Shuffle the roles array
     for (let i = roles.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [roles[i], roles[j]] = [roles[j], roles[i]];
     }
-    
+
     // Assign the shuffled roles to players
     newPlayers.forEach((player, index) => {
       player.role = roles[index];
     });
-    
+
     setPlayers(newPlayers);
   }
 
@@ -126,8 +126,8 @@ export function SportsMafiaPanelComponent() {
 
   const castVote = (playerId: number, votes: number) => {
     setCurrentVoting(currentVoting.map(vote =>
-      vote.playerId === playerId 
-        ? { ...vote, votes: vote.votes === votes ? 0 : votes } 
+      vote.playerId === playerId
+        ? { ...vote, votes: vote.votes === votes ? 0 : votes }
         : vote
     ))
   }
@@ -146,13 +146,13 @@ export function SportsMafiaPanelComponent() {
   }
 
   const addFoul = (playerId: number) => {
-    setPlayers(players.map(player => 
+    setPlayers(players.map(player =>
       player.id === playerId ? { ...player, fouls: Math.min(player.fouls + 1, 4) } : player
     ))
   }
 
   const removeFoul = (playerId: number) => {
-    setPlayers(players.map(player => 
+    setPlayers(players.map(player =>
       player.id === playerId ? { ...player, fouls: Math.max(player.fouls - 1, 0) } : player
     ))
   }
@@ -170,18 +170,7 @@ export function SportsMafiaPanelComponent() {
     }
   }
 
-  const getRoleIcon = (role: Player['role']) => {
-    switch (role) {
-      case 'sheriff':
-        return <Star className="ml-2 h-4 w-4 text-yellow-400" />
-      case 'don':
-        return <CircleDot className="ml-2 h-4 w-4 text-white" />
-      case 'mafia':
-        return <Axe className="ml-2 h-4 w-4 text-white" />
-      default:
-        return <User className="ml-2 h-4 w-4" />
-    }
-  }
+
 
   const shufflePlayers = () => {
     const shuffled = [...players].sort(() => Math.random() - 0.5);
@@ -254,7 +243,7 @@ export function SportsMafiaPanelComponent() {
         <h1 className="text-2xl font-bold">Sports Mafia Game Panel</h1>
         <ThemeToggle />
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
         <Card className="lg:col-span-2">
           <CardHeader>
@@ -266,8 +255,8 @@ export function SportsMafiaPanelComponent() {
                 <TableRow>
                   <TableHead>Place</TableHead>
                   <TableHead>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       onClick={shufflePlayers}
                       className="font-semibold"
                     >
@@ -275,8 +264,8 @@ export function SportsMafiaPanelComponent() {
                     </Button>
                   </TableHead>
                   <TableHead>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       onClick={distributeRoles}
                       className="font-semibold"
                     >
@@ -348,7 +337,7 @@ export function SportsMafiaPanelComponent() {
                       </Select>
                     </TableCell>
                     <TableCell>
-                      <Button 
+                      <Button
                         className={`w-10 h-10 ${getFoulButtonStyle(player.fouls)}`}
                         onClick={() => addFoul(player.id)}
                         onContextMenu={(e) => {
@@ -374,8 +363,8 @@ export function SportsMafiaPanelComponent() {
                     </TableCell>
                     <TableCell>{player.points}</TableCell>
                     <TableCell>
-                      <Button 
-                        onClick={() => killPlayer(player.id)} 
+                      <Button
+                        onClick={() => killPlayer(player.id)}
                         variant={player.killed ? "outline" : "destructive"}
                       >
                         {'Kill'}
@@ -387,7 +376,7 @@ export function SportsMafiaPanelComponent() {
             </Table>
           </CardContent>
         </Card>
-        
+
         <Card className="h-fit">
           <CardHeader>
             <CardTitle>Game Controls</CardTitle>
@@ -412,7 +401,7 @@ export function SportsMafiaPanelComponent() {
                     cy="50"
                     r="44"
                     fill="transparent"
-                    strokeDasharray="276.32" 
+                    strokeDasharray="276.32"
                     strokeDashoffset={276.32 * (1 - timer / 60)}
                     transform="rotate(-90 50 50)"
                   ></circle>
@@ -488,8 +477,8 @@ export function SportsMafiaPanelComponent() {
                   City Win
                 </Button>
               </div>
-              <Button 
-                onClick={saveGame} 
+              <Button
+                onClick={saveGame}
                 className="w-full"
                 disabled={!winningTeam || !judgeName}
               >
@@ -499,7 +488,7 @@ export function SportsMafiaPanelComponent() {
           </CardContent>
         </Card>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Current Voting</CardTitle>
@@ -520,14 +509,14 @@ export function SportsMafiaPanelComponent() {
                       <TableCell>{players.find(p => p.id === vote.playerId)?.nickname}</TableCell>
                       <TableCell>
                         <div className="flex flex-wrap gap-1">
-                          {Array.from({length: getLivePlayers()}, (_, i) => i + 1).map(voteCount => (
+                          {Array.from({ length: getLivePlayers() }, (_, i) => i + 1).map(voteCount => (
                             <Button
                               key={voteCount}
                               variant="outline"
                               size="sm"
                               onClick={() => castVote(vote.playerId, voteCount)}
-                              className={vote.votes === voteCount 
-                                ? "bg-primary text-primary-foreground hover:bg-gray-900 hover:text-white" 
+                              className={vote.votes === voteCount
+                                ? "bg-primary text-primary-foreground hover:bg-gray-900 hover:text-white"
                                 : "hover:bg-gray-200"
                               }
                             >
@@ -543,7 +532,7 @@ export function SportsMafiaPanelComponent() {
               <Button onClick={saveVoting} className="mt-4">Save Voting</Button>
             </>
           ) : (
-            <p>No active voting. Click on a player's nickname to nominate.</p>
+            <p>No active voting. Click on a player&apos;s nickname to nominate.</p>
           )}
         </CardContent>
       </Card>
